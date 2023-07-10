@@ -1,0 +1,35 @@
+.message-card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.message-left-components {
+    display: flex;
+}
+
+.message-avatar {
+    width: 2.5rem;
+    margin-right: 10px;
+}
+
+.message-username {
+    font-weight: 500;
+}
+
+.last-message {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+.message-right-components {
+    display: block;
+    text-align: right;
+    margin-right: 5px;
+}
+
+.unread-message {
+    margin-right: 10px; 
+}
+

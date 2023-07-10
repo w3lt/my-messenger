@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./messenger
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./messenger:/app
+    depends_on:
+      - server
+
+
+  server:
+    build:
+      context: ./messenger-server
+      dockerfile: Dockerfile
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./messenger-server:/server
+    networks:
+      - my-messenger-network
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+
+  mongodb:
+    image: mongo
+    networks:
+      - my-messenger-network
+
+networks:
+  my-messenger-network:
+    driver: bridge

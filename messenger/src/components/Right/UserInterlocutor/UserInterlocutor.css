@@ -1,0 +1,21 @@
+.UserInterlocutor_left {
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+  
+.user-info {
+    display: inline-block;
+    margin-left: 5px;  
+}
+
+.user-name {
+    font-weight: 600;
+}
+
+.button-img {
+    max-width: 30px;
+    height: 30px;
+    object-fit: cover;
+    margin: 3px;
+}

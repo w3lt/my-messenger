@@ -1,0 +1,41 @@
+#Right {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 5px 5px;
+    overflow-x: hidden;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.TypeMessageComponents {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.media-input-img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  margin: auto 5px;
+}
+
+.type-box {
+  border: 1px solid #F2F4F9;
+  border-radius: 5px;
+  flex-grow: 1;
+  padding: 1px;
+}
+
+.type-box textarea {
+  outline: none;
+  width: auto;
+  resize: none;
+  border: none;
+  overflow: hidden;
+  font-size: 16px;
+}
+
+

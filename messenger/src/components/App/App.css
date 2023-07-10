@@ -1,0 +1,33 @@
+:root {
+  --primary-color: #005fff;
+  --primary-color-alpha: #005fff1a;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.Chat_Path {
+  display: flex;
+  flex: 1;
+  /* height: 800px; */
+  height: 100%;
+  /* border-radius: 16px; */
+  box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px 0px;
+  overflow: hidden;
+}
+
+#separate-line {
+  width: 0;
+  height: 98%;
+  border: solid gray 1px;
+  border-radius: 1px;
+  display: inline-block;
+}
