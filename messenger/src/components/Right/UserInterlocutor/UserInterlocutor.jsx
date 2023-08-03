@@ -13,7 +13,7 @@ function UserInterlocutor ({ userProps }) {
             >
                 <img src={User} alt="User" className="button-img" />
                 <div className="user-info">
-                    <div className="user-name" >{userProps.name}</div>
+                    <div className="user-name" >{userProps.username}</div>
                     <div className="user-status" >Active now</div>
                 </div>
             </div>

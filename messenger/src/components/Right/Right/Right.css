@@ -12,7 +12,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .media-input-img {
@@ -26,16 +27,21 @@
   border: 1px solid #F2F4F9;
   border-radius: 5px;
   flex-grow: 1;
-  padding: 1px;
+  padding: 3px 1px;
 }
 
 .type-box textarea {
   outline: none;
-  width: auto;
+  width: 100%;
   resize: none;
   border: none;
   overflow: hidden;
   font-size: 16px;
 }
 
-
+.Realtime {
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+  flex-grow: 1; /* Occupy all the remaining space */
+}

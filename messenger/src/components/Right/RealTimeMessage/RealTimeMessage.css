@@ -1,0 +1,15 @@
+#RealTimeMessage {
+    display: flex;
+    flex-direction: column;
+}
+
+#RealTimeMessage {
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+  
+#RealTimeMessage::-webkit-scrollbar {
+    display: none;
+}

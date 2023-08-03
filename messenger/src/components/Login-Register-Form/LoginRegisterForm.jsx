@@ -1,11 +1,28 @@
 import React, { useRef, useState, useEffect } from "react";
 
+import { checkSession, register } from "../../support";
+
 import "./LoginRegisterForm.css";
 
 import logo from "../../assets/logo.png";
 import arrow from "../../assets/right-arrow.png";
+import { login } from "../../support";
+import { useNavigate } from "react-router-dom";
 
 function LoginRegisterForm() {
+    const navigate = useNavigate();
+
+
+
+    useEffect(() => {
+        (async () => {
+            const isLoggedIn = await checkSession();
+            if (isLoggedIn) {
+                navigate("/dashboard");
+            }
+        }) ();
+        
+    })
 
     const [isInLogIn, setIsInLogIn] = useState(true);
 
@@ -15,14 +32,15 @@ function LoginRegisterForm() {
                 <h1 className="form-title">Wibu <img src={logo} alt="" className="logo" /> Bar</h1>
             </div>
             {isInLogIn ?
-                <LoginForm setIsInLogIn={setIsInLogIn} /> :
-                <RegisterForm setIsInLogIn={setIsInLogIn} />
+                <LoginForm setIsInLogIn={setIsInLogIn} navigate={navigate} /> :
+                <RegisterForm setIsInLogIn={setIsInLogIn} navigate={navigate} />
             }
         </div>
     )
 }
 
-function LoginForm({ setIsInLogIn }) {
+function LoginForm({ setIsInLogIn, navigate }) {
+
 
     const [isAbleToLogin, setIsAbleToLogin] = useState(false);
 
@@ -39,7 +57,6 @@ function LoginForm({ setIsInLogIn }) {
             setUsername_Email(value);
         } else {
             setPassword(value);
-            
         }
     }
 
@@ -51,7 +68,16 @@ function LoginForm({ setIsInLogIn }) {
         ref.current.focus();
     }
 
-    function handleLoginRequest() {
+    async function handleLoginRequest() {
+        try {
+            const result = await login(username_email, password);
+            console.log(result);
+            if (result === 0) {
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            console.log(error);
+        }
         
     }
 
@@ -81,12 +107,18 @@ function LoginForm({ setIsInLogIn }) {
     
 }
 
-function RegisterForm({ setIsInLogIn }) {
+function RegisterForm({ setIsInLogIn, navigate }) {
+
+    const [isAbleToLogin, setIsAbleToLogin] = useState(false);
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    useEffect(() => {
+        setIsAbleToLogin(checkAllowingToLogin());
+    }, [username, password, password, confirmPassword]);
 
     function handleInputChange(e) {
         const value = e.target.value;
@@ -116,17 +148,28 @@ function RegisterForm({ setIsInLogIn }) {
         ref.current.focus();
     }
 
-    function checkToAllow() {
+    function checkAllowingToLogin() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        console.log(email);
-        
-        console.log(emailRegex.test(email));
 
         return (emailRegex.test(email) 
                 && username.length !== 0 
                 && password.length !== 0 
-                && confirmPassword === password)
+                && confirmPassword === password);
+    }
+
+    async function handleRegisterRequest() {
+        try {
+            const result = await register(email, username, password);
+            console.log("Result: " + result);
+            if (result === 0) {
+                navigate("/dashboard");
+            } else {
+                console.log(result);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 
     return (
@@ -153,7 +196,7 @@ function RegisterForm({ setIsInLogIn }) {
             <div
                 style={{display: "flex", flexDirection: "column", alignItems: "center"}}
             >
-                <button id="register-button" className={`${checkToAllow() ? 'allowed' : 'not-allowed'}`}>Register</button>
+                <button id="register-button" className={`${checkAllowingToLogin() ? 'allowed' : 'not-allowed'}`} onClick={handleRegisterRequest}>Register</button>
                 <div className="to-login" onClick={() => setIsInLogIn(true)}>Return to Login<img src={arrow} alt="" id="arrow" /></div>
             </div>
         </div>

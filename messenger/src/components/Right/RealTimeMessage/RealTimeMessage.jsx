@@ -3,24 +3,14 @@ import "./RealTimeMessage.css";
 import dayjs from "dayjs";
 import avatar from "../../../assets/User.png";
 
-function RealTimeMessage ({ RealTimeProps }) {
-    console.log(RealTimeProps);
+import Message from "../Message/Message";
+
+function RealTimeMessage({ RealTimeProps, interlocutorData }) {
     return (
-        <div className="RealTimeMessage">
-            <div className="RealTimeMessage-right">
-                <img src={avatar} alt="avatar" className="message-avatar" />
-                <div className="right-component1">
-                    {RealTimeProps.name}
-                </div>
-                <div className="right-component1">
-                    {RealTimeProps.last_message}
-                </div>
-                <div className="middle-component">
-                    <div className="">{RealTimeProps.unread_messages}</div>
-                    <div className="">{dayjs(new Date(RealTimeProps.receiving_time)).format("ddd, DD/MM/YYYY HH:mm")}</div>
-                </div>
-                <div className="">{RealTimeProps.receiving_time}</div>
-            </div>
+        <div id="RealTimeMessage">
+            {RealTimeProps.messages.map((message, index) => {
+                return <Message key={index} content={message.content} sender={RealTimeProps.usernames[message.sender] === interlocutorData.username ? null : "me"} />
+            })}
         </div>
     )
 }

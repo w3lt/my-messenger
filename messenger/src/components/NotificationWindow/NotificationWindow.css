@@ -1,0 +1,68 @@
+.notification-window {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    width: 50%;
+    height: 50%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.notification-window-title {
+    margin: 0 auto;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.notification-window-main-content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.notification {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+}
+
+.notification:hover {
+    background-color: #F0F2FE;
+    cursor: pointer;
+}
+
+.notification-title {
+    margin: 0;
+}
+
+.notification-content {
+    margin: 0;
+}
+
+.notification-icon {
+    height: 3rem;
+}
+
+.notification-icon-container {
+    border-radius: 10px;
+}
+
+.notification-icon-container:hover {
+    background-color: #F0F2FE;
+}
+
+#chosen-notification-tag {
+    background-color: #F0F2FE;
+}
+
+.notifications-container {
+    overflow-y: auto;
+}
+

@@ -14,74 +14,43 @@
   height: 100ch;
 }
 
-.left_wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 240px;
-}
-
-.left_sidebar_icon1 {
-  width: 44px;
-  height: 44px;
+#left_sidebar_top_icon {
   margin-top: 130px;
-  margin-left: 14px;
-  background:#ffffff;
-  border-radius: 9999px;
-  /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.33);*/
 }
   
-.left_sidebar_pic1 {
-  font-family: Helvetica Neue, sans-serif;
+.left_sidebar_pic {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
   
-.left_sidebar_icon2 {
+.left_sidebar_icon {
   width: 44px;
   height: 44px;
   margin: 14px;
-  background: linear-gradient(
-      150.64deg,
-      rgba(0, 0, 0, 0.1) 12.73%,
-      rgba(0, 0, 0, 0) 89.32%
-  ),
-  #ffffff;
+  background: #ffffff;
   border-radius: 9999px;
   /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.33);*/
   cursor: pointer;
-}
-  
-.left_sidebar_pic2 {
-  font-family: Helvetica Neue, sans-serif;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.left_sidebar_icon3 {
-  width: 44px;
-  height: 44px;
-  margin: 14px;
-  background: linear-gradient(
-      150.64deg,
-      rgba(0, 0, 0, 0.1) 12.73%,
-      rgba(0, 0, 0, 0) 89.32%
-  ),
-  #ffffff;
-  border-radius: 9999px;
-  /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.33);*/
-  cursor: pointer;
-}
-  
-.left_sidebar_pic3 {
-  font-family: Helvetica Neue, sans-serif;
-  height: 100%;
-  display: flex;
-  align-items: center;
+.notification-badge {
+  position: absolute;
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
   justify-content: center;
+  align-items: center;
+  top: -7px;
+  right: -7px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  border: solid white 1px;
+  padding: 3px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .left_header {
@@ -133,16 +102,17 @@
   margin-left: 5px;
   margin-right: 10px;
   display: flex;
-  justify-content: center;
   border: solid 1px #DDE6ED;
   border-radius: 20px;
   padding: 5px 0;
-  padding-left: 0;
+  padding-right: 10px;
+  flex-grow: 1;
 }
   
 .toolsbar_search textarea {
+  display: flex;
+  flex-grow: 1;
   outline: none;
-  width: 75%;
   margin-left: 5px;
   resize: none;
   border: none;
@@ -173,12 +143,12 @@
   display: none;
 }
 
-.message {
+.my-message {
   padding: 10px 10px;
   border-radius: 10px;
 }
 
-.message:hover {
+.my-message:hover {
   cursor: pointer;
   background-color: #F0F2FE;
   color: #6A7DF0;
@@ -188,6 +158,3 @@
   background-color: #F0F2FE;
   color: #6A7DF0;
 }
-
-
-

@@ -24,7 +24,7 @@ services:
     networks:
       - my-messenger-network
     environment:
-      - MONGODB_URI=mongodb://mongodb:27017
+      - MONGODB_URI=mongodb://mongodb:27017/myMessenger
 
   mongodb:
     image: mongo

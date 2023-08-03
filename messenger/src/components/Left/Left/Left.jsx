@@ -5,31 +5,66 @@ import Search from '../../../assets/Search.png';
 import Chat from '../../../assets/Chat.png';
 import People from '../../../assets/People.png';
 import CreateGroup from '../../../assets/CreateGroup.png';
+import Notification from '../../../assets/notification.png';
+import NotificationActive from '../../../assets/notification_active.png';
 
-import usersData from '../../../fake_dataset.json';
+
+import NotificationWindow from '../../NotificationWindow/NotificationWindow';
+
+import fake_dataset from '../../../fake_dataset.json';
+
+
+// import usersData from '../../../fake_dataset.json';
 
 import "./Left.css";
 import MessageCard from '../MessageCard/MessageCard';
+import { logout } from '../../../support';
 
-const SideBar = () => (
-    <div className= "left_sidebar">
-        <div className= "left_sidebar_icon1">
-            <div className= "left_sidebar_pic1">
+const SideBar = () => {
+
+    async function handleLogoutRequest() {
+        try {
+            const result = await logout();
+            console.log(result);
+            if (result === 0) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+
+    // Used for notification
+    const [isClicking, setIsClicking] = useState(false);
+
+    return <div className= "left_sidebar">
+        <div className= "left_sidebar_icon" id='left_sidebar_top_icon'>
+            <div className= "left_sidebar_pic">
                 <img src={Chat} alt="Chat" width={30}/>
             </div>
         </div>
-        <div className= "left_sidebar_icon2">
-            <div className= "left_sidebar_pic2">
+        <div className= "left_sidebar_icon">
+            <div className= "left_sidebar_pic">
                 <img src={People} alt="People" width={30}/>
             </div>
         </div>
-        <div className= "left_sidebar_icon3">
-            <div className= "left_sidebar_pic3">
+        <div className= "left_sidebar_icon" style={{position: "relative"}} onClick={() => {setIsClicking(previous => !previous)}}>
+            <div className= "left_sidebar_pic">
+                <img src={isClicking ? NotificationActive : Notification} alt="Notification" width={30}/>
+            </div>
+            <div className="notification-badge" id="notification-badge">2</div>
+        </div>
+        <div className= "left_sidebar_icon">
+            <div className= "left_sidebar_pic" onClick={handleLogoutRequest}>
                 <img src={LogOut} alt="LogOut" width={30}/>
             </div>
         </div>
+        {isClicking && <NotificationWindow notifications={fake_dataset.notifications} />}
+        
     </div>
-)
+}
 
 const Header = () => {
     return (
@@ -51,9 +86,10 @@ const ToolsBar = () => {
                         src={Search} 
                         alt="Search" 
                         width={20}
+                        style={{margin: "0 5px 0 10px"}}
                     />
                     <textarea 
-                        classsName="toolsbar_input_text" 
+                        className="toolsbar_input_text" 
                         placeholder="Search" 
                         rows={1}
                     />
@@ -64,7 +100,8 @@ const ToolsBar = () => {
     )
 }
 
-const Left = ({ setCurrentMessage }) => {
+const Left = ({ setCurrentMessageIndex, interlocutorDatas }) => {
+
 
     const [chosenMessage, setChosenMessage] = useState(null);
 
@@ -76,13 +113,11 @@ const Left = ({ setCurrentMessage }) => {
             <div 
                 style={{flexDirection: "row"}}
             >
-                <div className="left_wrapper">
-                    <Header />
-                    <ToolsBar />
-                </div>
+                <Header />
+                <ToolsBar />
                 <div id='messages'>
-                    {usersData.map((userData, index) => (
-                        <div onClick={() => {setCurrentMessage(userData);setChosenMessage(index);}} className={`message ${chosenMessage === index ? 'chosen-message' : ''}`} >
+                    {interlocutorDatas.map((userData, index) => (
+                        <div key={index} onClick={() => {setCurrentMessageIndex(index);setChosenMessage(index);}} className={`my-message ${chosenMessage === index ? 'chosen-message' : ''}`} >
                             <MessageCard messageProps={userData} />
                         </div>
                         

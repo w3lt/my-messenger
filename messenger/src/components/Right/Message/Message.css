@@ -1,0 +1,17 @@
+.conversation-message {
+    max-width: 60%;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin: 1px 0;
+}
+
+.me {
+    background-color: #E4C6EC;
+    align-self: flex-end;
+}
+
+.my-interlocutor {
+    background-color: #8FCFE5;
+    align-self: flex-start;
+}
