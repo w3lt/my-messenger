@@ -347,6 +347,25 @@ app.route('/friend-request')
         }
     })
 
+app.route('/group')
+    .post(async (req, res) => {
+        const username = req.session.username;
+        if (username === undefined) res.send(getResultByStatus(1));
+        else {
+            const groupName = req.body.groupName;
+            const visibility = req.body.visibility;
+
+            try {
+                const result = await support.createGroup(groupName, username, visibility);
+                res.send({status: 0, result: result});
+            } catch (error) {
+                console.log(error);
+                res.send(getResultByStatus(2));
+            }
+        }
+        
+    })
+
 const PORT = configs.PORT;
 app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`);

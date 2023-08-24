@@ -270,4 +270,31 @@ async function cancelFriendRequest(username) {
     }
 }
 
-export {checkSession, login, register, logout, fetchContact, sendMessage, fetchNotification, searchPeople, requestFriendRelationship, handleFriendRequest, fetchNumberUnreadNotification, readNotifications, cancelFriendRequest};
+async function createGroup(groupName, visibility) {
+    try {
+        const response = await fetch(`${server_main_route}/group`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({groupName: groupName, visibility: visibility})
+        });
+
+        const data = await response.json();
+        if (data.status === 0) {
+            console.log(data.result);
+            return 0;
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export {checkSession, login, register, logout, fetchContact, sendMessage,
+    fetchNotification, searchPeople, requestFriendRelationship, handleFriendRequest,
+    fetchNumberUnreadNotification, readNotifications, cancelFriendRequest,
+    createGroup
+};

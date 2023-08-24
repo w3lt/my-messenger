@@ -8,17 +8,20 @@ import PeopleActive from '../../../assets/People_active.png';
 import CreateGroup from '../../../assets/CreateGroup.png';
 import Notification from '../../../assets/notification.png';
 import NotificationActive from '../../../assets/notification_active.png';
+import Group from "../../../assets/group.png";
+import GroupActive from "../../../assets/group_active.png";
 
 
 // import usersData from '../../../fake_dataset.json';
 
 import "./Left.css";
 import MessageCard from '../ConversationCard/ConversationCard';
-import { fetchNumberUnreadNotification, logout } from '../../../support';
+import { createGroup, fetchNumberUnreadNotification, logout } from '../../../support';
 
 const SideBar = React.memo(({ setIsIn, isIn }) => {
 
     const [numberUnreadNotification, setNumberUnreadNotification] = useState(0);
+    const [isHovering, setIsHovering] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -48,7 +51,7 @@ const SideBar = React.memo(({ setIsIn, isIn }) => {
                 <img src={Chat} alt="Chat" width={30}/>
             </div>
         </div>
-        <div className= "left_sidebar_icon" onClick={() => {setIsIn([0, 0, 1])}}>
+        <div className="left_sidebar_icon" onClick={() => {setIsIn([0, 0, 1])}} >
             <div className= "left_sidebar_pic">
                 <img src={isIn[2] === 1 ? PeopleActive : People} alt="People" width={30}/>
             </div>
@@ -58,6 +61,11 @@ const SideBar = React.memo(({ setIsIn, isIn }) => {
                 <img src={isIn[1] === 1 ? NotificationActive : Notification} alt="Notification" width={30}/>
             </div>
             {(numberUnreadNotification !== 0) && <div className="notification-badge" id="notification-badge">{numberUnreadNotification}</div>}
+        </div>
+        <div className= "left_sidebar_icon" style={{position: "relative"}}>
+            <div className= "left_sidebar_pic">
+                <img src={Group} alt="Notification" width={30}/>
+            </div>
         </div>
         <div className= "left_sidebar_icon">
             <div className= "left_sidebar_pic" onClick={handleLogoutRequest}>
@@ -95,7 +103,7 @@ const ToolsBar = ({searchValue, setSearchValue}) => {
                         rows={1}
                     />
                 </div>
-                <button className='create-group-button'><img src={CreateGroup} alt="create-group" className='create-group' /></button>
+                <button className='create-group-button' onClick={async () => {await createGroup("Hello", 0)}}><img src={CreateGroup} alt="create-group" className='create-group' /></button>
             </div>
         // </div>
     )

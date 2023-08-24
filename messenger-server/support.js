@@ -12,6 +12,7 @@ const Conversation = require('./dbModels/Conversation');
 const Notification = require('./dbModels/Notifications/Notification');
 const FriendRequest = require('./dbModels/Notifications/FriendRequest');
 const FriendRelationship = require('./dbModels/FriendRelationship');
+const Group = require('./dbModels/Group');
 
 async function findUserByEmail(email) {
     const result = await User.Model.findOne({email: email});
@@ -204,6 +205,21 @@ async function readNotifications(username, type) {
     }
 }
 exports.readNotifications = readNotifications;
+
+async function createGroup(groupName, ownerUsername, visibility) {
+    const newGroup = {
+        members: [{username: ownerUsername}],
+        name: groupName,
+        visibility: visibility
+    }
+    try {
+        const result = await Group.Model.insertMany([newGroup]);
+        return result[0];
+    } catch (error) {
+        throw error;
+    }
+}
+exports.createGroup = createGroup;
 
 // function to encode file data to base64 encoded string
 function base64Encode(file) {
