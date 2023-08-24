@@ -1,0 +1,112 @@
+.notification-window {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    width: 50%;
+    height: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.cancel-button {
+    width: 10px; 
+    height: 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.notification-window-title {
+    margin: 0 auto;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.notification-window-main-content {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.notification-tags {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-icon {
+    height: 3rem;
+}
+
+.notification-icon-container {
+    border-radius: 10px;
+}
+
+.notification-icon-container:hover {
+    background-color: #F0F2FE;
+}
+
+#chosen-notification-tag {
+    background-color: #F0F2FE;
+}
+
+.notifications-container {
+    display: flex;
+    overflow-y: auto;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.notification {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.notification:hover {
+    background-color: #F0F2FE;
+    cursor: pointer;
+}
+
+.notification-avatar {
+    width: 3rem;
+    height: 3rem;
+}
+
+.notification-content {
+    margin-left: 10px;
+}
+
+.notification-title {
+    margin: 0;
+}
+
+.notification-body {
+    margin: 0;
+}
+
+.response-container {
+    display: flex;
+    margin-left: auto;
+}
+
+.response-button {
+    /* background-color: #E2E7FD; */
+    padding: 6px 20px;
+    border-radius: 10px;
+    margin: 0 10px 0 0;
+    display: flex;
+    align-items: center;
+}
+
+.response-button:hover {
+    background-color: #6A7DF0;
+}

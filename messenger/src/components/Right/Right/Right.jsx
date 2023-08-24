@@ -11,6 +11,9 @@ import RealTimeMessage from '../RealTimeMessage/RealTimeMessage';
 import "./Right.css";
 import { sendMessage } from '../../../support';
 
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from 'react-tooltip';
+
 
 const Right = ({ conversationData, interlocutorData, setConversations }) => {
 

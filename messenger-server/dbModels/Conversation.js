@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
 const ConversationSchema = new mongoose.Schema({
-    usernames: [{
-        type: String,
-        ref: 'User',
-        foreignField: 'username'
-    }],
+    usernames: {
+        type: [String, String],
+        required: true,
+        unique: true
+    },
     messages: {
         type: [{
             sender: Number,
             content: String,
-            sent_at: Date
+            sent_at: Date,
+            // type: Number // 0 -> message, 1 -> system notification
         }],
         default: []
     },
@@ -20,5 +21,5 @@ const ConversationSchema = new mongoose.Schema({
     }
 })
 
-const ConversationModel = mongoose.model('Message', ConversationSchema);
+const ConversationModel = mongoose.model('Conversation', ConversationSchema);
 exports.Model = ConversationModel;

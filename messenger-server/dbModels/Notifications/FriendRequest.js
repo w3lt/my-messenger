@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const FriendRequestSchema = new mongoose.Schema({
+let FriendRequestSchema = new mongoose.Schema({
     sender: {
         type: String,
         required: true,
@@ -16,8 +16,15 @@ const FriendRequestSchema = new mongoose.Schema({
     created_at: {
         type: Date,
         default: new Date()
+    },
+    is_response: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
+
+FriendRequestSchema.index({ sender: 1, receiver: 1 }, { unique: true });
 
 const FriendRequestModel = mongoose.model('FriendRequest', FriendRequestSchema);
 exports.Model = FriendRequestModel;

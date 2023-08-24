@@ -1,4 +1,4 @@
-const SERVER_ADDR = "http://localhost";
+const SERVER_ADDR = "http://10.101.2.81";
 
 const SERVER_PORT = 12345;
 

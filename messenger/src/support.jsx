@@ -144,4 +144,130 @@ async function fetchNotification(index) {
     }
 }
 
-export {checkSession, login, register, logout, fetchContact, sendMessage, fetchNotification};
+async function readNotifications(index) {
+    let type;
+    switch (index) {
+        case 0:
+            type = "friend-requests";
+            break;
+    }
+    try {
+        const response = await fetch(`${server_main_route}/notifications/${type}`, {
+            method: "POST",
+            credentials: "include",
+        });
+
+        const data = await response.json();
+        if (data.status === 0) {
+            return 0;
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function fetchNumberUnreadNotification() {
+    try {
+        const response = await fetch(`${server_main_route}/notifications`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        const data = await response.json();
+        if (data.status === 0) {
+            return data.numberUnreadNotification;
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function searchPeople(searchingName) {
+    try {
+        const response = await fetch(`${server_main_route}/people/${searchingName}`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        const data = await response.json();
+        if (data.status === 0) {
+            return data.data;
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function requestFriendRelationship(username) {
+    try {
+        const response = await fetch(`${server_main_route}/friends`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({receiver: username})
+        });
+
+        const data = await response.json();
+        if (data.status === 0) {
+            return 0;
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function handleFriendRequest(sender, type) {
+    try {
+        const response = await fetch(`${server_main_route}/friend-request`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({sender: sender, type: type})
+        });
+
+        const data = await response.json();
+        if (data.status === 0) {
+            return 0;
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function cancelFriendRequest(username) {
+    try {
+        const response = await fetch(`${server_main_route}/friends`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({receiver: username})
+        });
+
+        const data = await response.json();
+        if (data.status === 0) {
+            return 0;
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export {checkSession, login, register, logout, fetchContact, sendMessage, fetchNotification, searchPeople, requestFriendRelationship, handleFriendRequest, fetchNumberUnreadNotification, readNotifications, cancelFriendRequest};

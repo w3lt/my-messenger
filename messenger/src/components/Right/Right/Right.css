@@ -8,6 +8,11 @@
     flex-grow: 1;
 }
 
+.TypeMessage {
+  display: flex;
+  margin-bottom: 10px;
+}
+
 .TypeMessageComponents {
   display: flex;
   align-items: center;

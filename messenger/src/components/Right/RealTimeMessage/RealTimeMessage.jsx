@@ -6,10 +6,13 @@ import avatar from "../../../assets/User.png";
 import Message from "../Message/Message";
 
 function RealTimeMessage({ RealTimeProps, interlocutorData }) {
+
+    const messages = [...RealTimeProps.messages];
+    messages.reverse();
     return (
         <div id="RealTimeMessage">
-            {RealTimeProps.messages.map((message, index) => {
-                return <Message key={index} content={message.content} sender={RealTimeProps.usernames[message.sender] === interlocutorData.username ? null : "me"} />
+            {messages.map((message, index) => {
+                return <Message key={index} content={message.content} sender={RealTimeProps.usernames[message.sender] === interlocutorData.username ? null : "me"} sent_at={message.sent_at} index={index} />
             })}
         </div>
     )

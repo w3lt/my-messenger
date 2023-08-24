@@ -5,6 +5,8 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
+const fs = require('fs').promises;
+const path = require('path');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -19,7 +21,6 @@ mongoose.connect(configs.db_server);
 // Database model
 const User = require('./dbModels/User');
 const Conversation = require('./dbModels/Conversation');
-
 
 const app = express();
 app.set('trust proxy', 1) // trust first proxy
@@ -62,7 +63,7 @@ passport.use(new LocalStrategy(
 
 // Cors
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with the allowed origin(s)
+    res.setHeader('Access-Control-Allow-Origin', 'http://10.101.2.81:3000'); // Replace with the allowed origin(s)
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -146,9 +147,6 @@ app.route('/register')
                                 email: email,
                                 username: username,
                                 password: hashedPass,
-                                dob: null,
-                                avatar: null,
-                                gender: null,
                             }
                             User.Model.insertMany([newUser])
                                 .then(docs => {
@@ -193,22 +191,26 @@ app.route('/my-contacts')
         const myUsername = req.session.username;
         if (myUsername === undefined) res.send(getResultByStatus(1));
         else {
-            const results = await Conversation.Model.find({usernames: {$in: [myUsername]}});
-            const myInterlocutorsInforPromise = results.map(async result => {
-                const myInterlocutor = (result.usernames[0] === myUsername) ? result.usernames[1] : result.usernames[0];
-                const interlocutorInforDoc = await support.findInterlocutor(myInterlocutor);
-                const lastMessage = result.messages[result.messages.length-1];
+            try {
+                const results = await Conversation.Model.find({usernames: {$in: [myUsername]}});
+                const myInterlocutorsInfor = await Promise.all(results.map(async result => {
+                    const messagesLength = result.messages.length;
+                    const myInterlocutor = (result.usernames[0] === myUsername) ? result.usernames[1] : result.usernames[0];
+                    const interlocutorInfor = await support.findInterlocutor(myInterlocutor);
+                    const lastMessage = (messagesLength !== 0) ? result.messages[messagesLength-1] : {content: null, sent_at: null};
 
-                const interlocutorInfor = interlocutorInforDoc.toObject();
+                    interlocutorInfor.lastMessage = lastMessage.content;
+                    interlocutorInfor.lastMessageSender = (messagesLength === 0) ? null : ((myInterlocutor === result.usernames[lastMessage.sender]) ? 1 : 0);
+                    interlocutorInfor.receivingTime = lastMessage.sent_at;
+                    
+                    return interlocutorInfor;
+                }));
 
-                interlocutorInfor.lastMessage = lastMessage.content;
-                interlocutorInfor.receivingTime = lastMessage.sent_at;
-                
-                return interlocutorInfor;
-            });
-
-            const myInterlocutorsInfor = await Promise.all(myInterlocutorsInforPromise);
-            res.send({interlocutor: myInterlocutorsInfor, conversations: results});
+                res.send({interlocutor: myInterlocutorsInfor, conversations: results});
+            } catch (error) {
+                console.log(error);
+                res.send(getResultByStatus(2));
+            }            
         }
     })
 
@@ -222,27 +224,127 @@ app.route('/message')
         res.send(conversation);
     })
 
-app.route('/conversation')
-    .post(async (req, res) => {
+// app.route('/conversation')
+//     .post(async (req, res) => {
         
-    });
+//     });
 
-app.route('/notifications/:type')
+app.route('/notifications')
     .get(async (req, res) => {
-        const type = req.params.type;
         const username = req.session.username;
         if (username === undefined) res.send(getResultByStatus(1));
         else {
-            let result;
-            switch (type) {
-                case "friend-requests":
-                    result = await support.findFriendRequestNotifications(username);
-                    break;
-            }
+            try {
+                const numberUnreadNotification = await support.countNotification(username);
+                res.send({status:0, numberUnreadNotification: numberUnreadNotification});
+            } catch(error) {
 
-            res.send({status: 0, data: result});
+                res.send(getResultByStatus(2));
+            }
         }
-        
+    })
+
+app.route('/notifications/:type')
+    .get(async (req, res) => {
+        const username = req.session.username;
+        if (username === undefined) res.send(getResultByStatus(1));
+        else {
+            const type = req.params.type;
+            try {
+                let result;
+                switch (type) {
+                    case "friend-requests":
+                        result = await support.findFriendRequestNotifications(username);
+                        break;
+                }
+
+                res.send({status: 0, data: result});
+            } catch (error) {
+                console.log(error);
+                res.send(getResultByStatus(2));
+            }
+            
+        }
+    })
+    .post(async (req, res) => {
+        const username = req.session.username;
+        if (username === undefined) res.send(getResultByStatus(1));
+        else {
+            const type = req.params.type;
+            try {
+                let result;
+                switch (type) {
+                    case "friend-requests":
+                        result = await support.readNotifications(username, 0);
+                        break;
+                }
+                res.send(getResultByStatus(0));
+            } catch (error) {
+                res.send(getResultByStatus(2));
+            }
+            
+        }
+    })
+
+app.route('/people/:searchingPeople')
+    .get(async (req, res) => {
+        const username = req.session.username;
+        if (username === undefined) res.send(getResultByStatus(1));
+        else {
+            const searchingPeople = req.params.searchingPeople;
+            const tmpResults = await support.searchPeople(searchingPeople, username);
+
+            // The base path of avatars dir
+            const avatarBasePath = "assets/avatars";
+
+            const finalResults = await Promise.all(tmpResults.map(async result => {  
+                const avatarPath = `${__dirname}/${avatarBasePath}/${result.avatarPath}`;
+                try {
+                    const avatar = support.base64Encode(avatarPath);
+                    delete result.avatarPath;
+                    result.avatar = avatar;
+                } catch (error) {
+                    console.log(error);
+                }
+                return result;
+            }))
+
+            res.send({status: 0, data: finalResults});
+        }
+    })
+
+app.route('/friends')
+    .post(async (req, res) => {
+        const username = req.session.username;
+        if (username === undefined) res.send(getResultByStatus(1));
+        else {
+            try {
+                const receiver = req.body.receiver;
+                const result = await support.addFriendRequest(username, receiver);
+                if (result === 0) res.send({status: 0});
+            } catch (error) {
+                res.send(getResultByStatus(2));
+            }
+        }
+    });
+
+app.route('/friend-request')
+    .post(async (req, res) => {
+        const username = req.session.username;
+        if (username === undefined) res.send(getResultByStatus(1));
+        else {
+            const sender = req.body.sender;
+            const type = req.body.type;
+            try {
+                console.log(sender);
+                console.log(type);
+                const result = await support.handleFriendRequest(username, sender, type);
+                if (result === 0) res.send({status: 0});
+            } catch (error) {
+                console.log(error);
+                res.send(getResultByStatus(2))
+            }   
+        }
     })
 
 const PORT = configs.PORT;

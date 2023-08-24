@@ -13,9 +13,18 @@ const NotificationSchema = new mongoose.Schema({
         title: String,
         body: String
     },
+    avatar_path: {
+        type: String,
+        required: true,
+    },
     created_at: {
         type: Date,
         default: new Date()
+    },
+    is_read: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 

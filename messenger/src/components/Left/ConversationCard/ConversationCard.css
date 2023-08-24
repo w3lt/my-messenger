@@ -1,10 +1,6 @@
-.message-card {
+.conversation-card {
     display: flex;
-    justify-content: space-between;
-}
-
-.message-left-components {
-    display: flex;
+    flex-grow: 1;
 }
 
 .message-avatar {
@@ -12,8 +8,18 @@
     margin-right: 10px;
 }
 
+.conversation-infor-up-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .message-username {
     font-weight: 500;
+}
+
+.last-receiving-day {
+    margin-left: auto;
 }
 
 .last-message {
@@ -21,12 +27,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 250px;
-}
-
-.message-right-components {
-    display: block;
-    text-align: right;
-    margin-right: 5px;
 }
 
 .unread-message {

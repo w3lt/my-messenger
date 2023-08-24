@@ -7,12 +7,26 @@
     box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px 0px;
     overflow: hidden;
 }
+
+#dashboard:focus {
+    outline: none;
+}
   
 #separate-line {
     width: 0;
-    height: 98%;
+    height: 90ch;
     border: solid gray 1px;
     border-radius: 1px;
     display: inline-block;
-    margin: auto 0;
+    margin: 5ch 0;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity and color as needed */
+    z-index: 1;
 }
